@@ -1,5 +1,5 @@
 # OUI
-OUI is na esolang which is freindly!
+OUI is an esolang which is freindly!
 
 ## What OUI offers?
 * 	**Errors are not fatal**, anyone one can make mistakes. The Program doesn’t stop when an error occurs.
