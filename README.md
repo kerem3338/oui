@@ -21,7 +21,7 @@ then run OUI Interpreter with following command
 python oui.py
 ```
 #### With that you get *OUI REPL*
-[![(The OUI REPL](https://i.hizliresim.com/te5ktgh.png "(The OUI REPL")](https://i.hizliresim.com/te5ktgh.png "(The OUI REPL")
+![(The OUI REPL](assets/repl_image.png)
 
 ### The Syntax
 OUI just has operations (functions) to work with, so function calls are seperated by a `---` and function arguments are seperated by a `\`
