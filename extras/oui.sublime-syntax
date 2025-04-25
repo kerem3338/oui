@@ -1,0 +1,74 @@
+%YAML 1.2
+---
+name: OUI
+file_extensions: [oui]
+scope: source.oui
+
+contexts:
+  main:
+    # Comments
+    - match: '##\|.*$'
+      scope: comment.line.number-sign.oui
+
+    # Operations
+    - match: \bprint var if exists\b
+      scope: keyword.control.oui
+
+    - match: \bprint var\b
+      scope: keyword.control.oui
+
+    - match: \bprint with space\b
+      scope: keyword.control.oui
+
+    - match: \bprint\b
+      scope: keyword.control.oui
+
+    - match: \bfor\b
+      scope: keyword.control.oui
+
+    - match: \bwhile\b
+      scope: keyword.control.oui
+
+    - match: \bset-var\b
+      scope: keyword.control.oui
+
+    - match: \bnumber\+\+\b
+      scope: keyword.control.oui
+
+    - match: \bnumber--\b
+      scope: keyword.control.oui
+
+    - match: \bdo nothing for <[a-zA-Z_][a-zA-Z0-9_]*> amount of time\b
+      scope: keyword.control.oui
+
+    - match: \bdo nothing\b
+      scope: keyword.control.oui
+
+    - match: \badd \d+ spaces to output\b
+      scope: keyword.control.oui
+
+    - match: \bspeak to me\b
+      scope: keyword.control.oui
+
+    # Numbers
+    - match: \b\d+(\.\d+)?\b
+      scope: constant.numeric.oui
+
+    # Call seperator
+    - match: '\|'
+      scope: punctuation.separator.oui
+
+    # Hmm...
+    - match: '==|---|\+\+|--|'
+      scope: keyword.operator.oui
+
+    # Strings
+    - match: "'"
+      push: single-quoted-string
+
+  single-quoted-string:
+    - meta_scope: string.quoted.single.oui
+    - match: "\\."
+      scope: constant.character.escape.oui
+    - match: "'"
+      pop: true

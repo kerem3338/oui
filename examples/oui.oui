@@ -1,0 +1,38 @@
+##|'This is a comment line' ---
+
+print|'Hello!' ---
+
+##|'We can do a little bit more than just `Hello!`' ---
+print <x> == <y>|2|2.5 ---
+
+do nothing for <x> amount of time|0.1 ---
+
+set-var|'x'|0 ---
+
+print var|'x' ---
+
+do nothing for <x> amount of time|0.1 ---
+
+number++|'x' ---
+
+print var|'x' ---
+
+do nothing for <x> amount of time|0.1 ---
+
+number--|'x' --- number--|'x' ---
+
+print var|'x' ---
+
+do nothing for <x> amount of time|0.1 ---
+
+print with space|'Ok, lets check how many errors we got so far. Erros:' ---
+
+print var if exists|'error count' ---
+
+print|'I want to say something to you...' ---
+
+do nothing for <x> amount of time|0.1 ---
+
+add 4 spaces to output| ---
+
+speak to me| ---
