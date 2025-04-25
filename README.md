@@ -1,8 +1,8 @@
 # OUI
-OUI is an esolang which is freindly!
-
+OUI is an esolang which is friendly!
+ 
 ## What OUI offers?
-* 	**Errors are not fatal**, anyone one can make mistakes. The Program doesn’t stop when an error occurs.
+*	**Errors are not fatal**, anyone one can make mistakes. The Program doesn’t stop when an error occurs.
 *	**All Numbers are floats**, think floats as better int
 *	**Good booleans**, Bools can be 'true', 'TT', 'false', 'FF'
 *	**Flexible names**, Operation (function)/Variable names can include spaces or some special characters
@@ -30,16 +30,4 @@ OUI just has operations (functions) to work with, so function calls are seperate
 print|'Hello World' --- normal exit
 ```
 
-### The Current Operations
-- `set-var`
-- `do nothing for <x> amount of time`
-- `del-var`
-- `print`
-- `speak to me`
-- `...`
-- `normal exit`
-- `force exit`
-- `force exit if you want`
-- `normal exit if you want`
-- `where`
-- `print_var`
+*Note: OUI has syntax highlighting for Sublime Text in [extras](./extras) folder.*

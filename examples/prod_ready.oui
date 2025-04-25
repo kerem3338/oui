@@ -5,7 +5,7 @@ do nothing for <x> amount of time|1 ---
 print|'..' ---
 do nothing for <x> amount of time|1 ---
 print|'...' ---
-do nothing for <x> amout of time|1 ---
+do nothing for <x> amount of time|1 ---
 normal exit if you want ---
 print|'Failed to do so.' ---
 normal exit
