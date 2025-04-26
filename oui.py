@@ -10,12 +10,14 @@ Licensed under MIT license.
 
 You can learn more about OUI in README.md file.
 """
+import json
 import argparse
 import random
 import sys
 import time
+import os
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 rnd_messages = [
     "Do you know you have rights?",
@@ -26,7 +28,7 @@ rnd_messages = [
     "Good luck!",
     f"My lucky number is {random.randint(0,10)}",
     f"{'I hate you' if random.randint(0,1) == 1 else 'I don\' hate you'}",
-    "Made in Turkey!"
+    "Made in Turkey!",
 ]
 
 holly_words = [
@@ -42,10 +44,14 @@ class Errors:
     var_value_error = "value error! '{e}' at '{location}' (variable name = '{var_name}')"
     value_error = "value error! '{e}' at '{location}'"
 
-def get_number(src):
+def colored(r, g, b, text) -> str:
+    return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
+
+def get_number(src) -> float:
     return float(src)
 
-def get_bool(src):
+def get_bool(src) -> bool:
+    """Get bool from src"""
     if src in ["true","TT"]:
         return True
     elif src in ["false","FF"]:
@@ -53,6 +59,7 @@ def get_bool(src):
     else: raise Exception("Invalid bool")
 
 def get_string(src, report=False):
+    """Get string from src"""
     _ = ""
     str_open = -1
     str_end  = -1
@@ -73,6 +80,7 @@ def get_string(src, report=False):
 
 
 def get_from_type(inp, type):
+    """Get value from input and type"""
     if type == "bool":
         return get_bool(inp)
     elif type == "string":
@@ -84,7 +92,8 @@ def get_from_type(inp, type):
         return get_number(inp)
     else: raise Exception("Unknown type")
 
-def get_type_from_str(src):
+def get_type_from_str(src) -> str:
+    """Get type of src"""
     if len(src) >= 1:
         if src[0].isnumeric():
             return "number"
@@ -95,14 +104,34 @@ def get_type_from_str(src):
                 return "string"
     raise Exception("source 'src' len must be at least 1")
 
-def exact_arg_require(required, errors, got, location):
+def exact_arg_require(required, errors, got, location) -> bool:
+    """Exact argument error handler"""
     if got != required:
         errors.append(Errors.argument_error.format(location = location, required = required, got = got))
         return False
 
     return True
 
-def get_string_or_error(src, errors, location):
+def get_number_from_list_or_error(work_list, errors, location, convert_int = False) -> list[list,bool]:
+    """Function name is the description..."""
+    _ = []
+    is_ok = True
+    for list_val in work_list:
+        try:
+            number = get_number(list_val)
+        except Exception as e:
+            errors.append(Errors.value_error.format(e=e, location=location))
+            is_ok = False
+        else:
+            if convert_int:
+                number = int(number)
+
+            _.append(number)
+
+    return (_, is_ok)
+
+def get_string_or_error(src, errors, location) -> str or bool:
+    """Get string from src or append error"""
     _str = get_string(src, True)
     if _str[1] is False:
         errors.append(Errors.value_error.format(e='not a valid string!', location=location))
@@ -111,12 +140,17 @@ def get_string_or_error(src, errors, location):
         return _str[0]
 
 def execute(src, welcome_text = True):
+    """Magic function."""
     if welcome_text:
-        print(f'OUI Interpreter ({__version__})\n\nRandom message for you:\n\t{random.choice(rnd_messages)}\n')
+        print(colored(0,127,127,f'OUI Interpreter ({__version__})\n\nRandom message for you:\n\t{random.choice(rnd_messages)}\n'))
 
     variables = {
         "propaganda": "I'm the selected programming language.",
         "error count": 0
+    }
+
+    system_variables = {
+        "error variable not exists flag": False
     }
 
     errors = []
@@ -130,6 +164,7 @@ def execute(src, welcome_text = True):
 
         operations.append(parts)
 
+    # More magic.
     for op_i, op in enumerate(operations):
         op_name = op[0]
         match op_name:
@@ -206,7 +241,15 @@ def execute(src, welcome_text = True):
                     continue
 
                 variables.pop(var_name)
-                
+            
+            case 'rgb print':
+                if not exact_arg_require(5, errors, len(op), op_name): continue
+
+                rgb_values = get_number_from_list_or_error(op[1:4], errors, op_name, convert_int = True)
+                if rgb_values[1] is False: continue
+
+                print(colored(*rgb_values[0],get_from_type(op[4],get_type_from_str(op[4]))))
+
             case 'print':
                 for arg in op[1:]:
                     print(get_from_type(arg,get_type_from_str(arg)))
@@ -267,24 +310,34 @@ def execute(src, welcome_text = True):
                 
             case 'print_var_if_exists' | 'print var if exists':
                 for arg in op[1:]:
-                    arg_name = get_string_or_error(arg, errors, op_name)
+                    var_name = get_string_or_error(arg, errors, op_name)
                     if var_name is False: continue
 
-                    if arg_name in variables:
-                        print(variables[get_string(arg)])
+                    if var_name in variables:
+                        print(variables[var_name])
+            
+            case 'newline':
+                print()
+
+            case 'print all variables':
+                print(json.dumps(variables, indent = 4))
 
             case 'print_var' | 'print var':
                 for arg in op[1:]:
-                    arg_name = get_string_or_error(arg, errors, op_name)
+                    var_name = get_string_or_error(arg, errors, op_name)
                     if var_name is False: continue
 
-                    if not arg_name in variables:
+                    if not var_name in variables:
                         errors.append(Errors.var_not_founded.format(var=var_name))
                         continue
-                    print(variables[get_string(arg)])
+                    print(variables[var_name])
             case _:
                 errors.append(Errors.unknown_operation.format(operation=op_name))
-                variables["error count"] += 1
+                if not "error count" in variables:
+                    if system_variables["error variable not exists flag"] == False:
+                        print(colored(255,0,0,"I'm trying to increment 'error count' variable, but i couldn't find it. Do you know anything about this?"))
+                        system_variables["error variable not exists flag"] = True
+                else: variables["error count"] += 1
 
     print(f"\nExecution completed with ({len(errors)}) errors")
     if len(errors) == 0:
@@ -292,9 +345,12 @@ def execute(src, welcome_text = True):
         
     for i, error in enumerate(errors):
         # You can't say 'FIX THE ERROR 0!' to someone... or if you can?
-        print(f"\t├ [op: {op_i + 1} ] {i + 1}) ", error)
+        print(f"\t├ {i + 1}) ", error)
 
 if __name__ == "__main__":
+    # A little hack for ANSI escape codes
+    os.system("")
+
     if len(sys.argv) == 1:
         sys.argv.append("--repl")
 

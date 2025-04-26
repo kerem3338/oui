@@ -36,3 +36,15 @@ do nothing for <x> amount of time|0.1 ---
 add 4 spaces to output| ---
 
 speak to me| ---
+
+newline| --- print with space|'Hmm... now we can take a look of our variables. ' --- newline ---
+
+print all variables| ---
+
+##|'Who needs a error counter anymore?' ---
+
+rgb print|255|255|50|'We don`t need error counter anymore!' ---
+
+del-var|'error count' ---
+
+i made a mistake

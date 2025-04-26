@@ -32,6 +32,18 @@ contexts:
     - match: \bset-var\b
       scope: keyword.control.oui
 
+    - match: \bprint all variables\b
+      scope: keyword.control.oui
+    
+    - match: \brgb print\b
+      scope: keyword.control.oui
+
+    - match: \bdel-var\b
+      scope: keyword.control.oui
+
+    - match: \bnewline\b
+      scope: keyword.control.oui
+
     - match: \bnumber\+\+\b
       scope: keyword.control.oui
 
