@@ -1,0 +1,5 @@
+set-var|'get input auto hint'|TT ---
+rgb print|125|125|50|'What is your name sir?' ---
+get input auto|'name' ---
+print with space|'Now lets check if we have the same name' --- newline --- newline ---
+print var <x> == value <y>|'name'|'zoda'|TT

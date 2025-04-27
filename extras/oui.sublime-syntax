@@ -23,7 +23,22 @@ contexts:
     - match: \bprint\b
       scope: keyword.control.oui
 
+    - match: \bexecute another file\b
+      scope: keyword.control.oui
+
+    - match: \bget input\b
+      scope: keyword.control.oui
+
+    - match: \bget input auto\b
+      scope: keyword.control.oui
+
     - match: \bfor\b
+      scope: keyword.control.oui
+
+    - match: \bprint var <x> == value <y>\b
+      scope: keyword.control.oui
+
+    - match: \bexecute the <x> system command, i know what im doing. I agree to execute untrusted commands on my device\b
       scope: keyword.control.oui
 
     - match: \bwhile\b
